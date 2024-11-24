@@ -1,0 +1,22 @@
+steps:
+  # Build the Docker image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/seismic-sunbeam-436122-e7/myapp:5f6c3d0', '.']
+
+  # Push the Docker image to GCR
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/seismic-sunbeam-436122-e7/myapp:5f6c3d0']
+
+  # Deploy the image to GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment/myapp-deployment', 'myapp=gcr.io/seismic-sunbeam-436122-e7/myapp:5f6c3d0', '--namespace=staging']
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=my-flask-cluster'
+
+images:
+  - 'gcr.io/seismic-sunbeam-436122-e7/myapp:5f6c3d0'
+
+substitutions:
+  _ZONE: 'us-central1-a'
+  _CLUSTER_NAME: 'my-flask-cluster'
