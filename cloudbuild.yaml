@@ -20,3 +20,6 @@ images:
 substitutions:
   _ZONE: 'us-central1-a'
   _CLUSTER_NAME: 'my-flask-cluster'
+
+options:
+  default_logs_bucket_behavior: REGIONAL_USER_OWNED_BUCKET
